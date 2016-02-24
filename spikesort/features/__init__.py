@@ -101,7 +101,7 @@ class SpikeFeatures:
         elif self.feature_selection.lower() == 'var':
             self.index_features_selected = variance(self.features)
         elif self.feature_selection.lower() == 'lt':
-            self.index_features_selected = kstest_normal(self.features)
+            self.index_features_selected = kstestnormal(self.features)
             
         self.features_selected = self.features[:, self.index_features_selected]
                     
