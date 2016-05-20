@@ -24,6 +24,44 @@
 
 import numpy as np
 
+def adjust_spike_times(t_spikes, data, samples_before, samples_after):
+    """
+    Adjusts the spike times such that they coincide with the peak of the
+    spike waveform
+    
+    Parameters
+    ----------
+
+    data : ndarray
+        The signal from which to detect spikes
+        
+    t_spikes : ndarray
+        The times of spikes in the signal
+    
+    samples_before : int
+        Number of samples before each spike time to include in the waveform
+        
+    samples_after : int
+        Number of samples after each spike time to include in the waveform
+        
+    Returns
+    -------
+    
+    t_spikes_adj : ndarray
+        The times of spikes after adjustment
+        
+    """
+    n_spikes = t_spikes.shape[0]
+    n_samples = max(samples_before, samples_after)
+    t_spikes_adj = np.empty(t_spikes.shape, dtype=int)
+    for j in range(n_spikes):
+        # Extract segments of max(samples_before, samples_after) samples
+        # from both sides of the spike time
+        s = data[t_spikes[j] - n_samples : t_spikes[j] + n_samples]
+        t_spikes_adj[j] = t_spikes[j] - n_samples + np.argmax(s)
+        
+    return t_spikes_adj
+
 def extract_waveforms(t_spikes, data, samples_before, samples_after):
     """
     Extracts spike waveforms from the signal
@@ -53,6 +91,7 @@ def extract_waveforms(t_spikes, data, samples_before, samples_after):
     n_spikes = t_spikes.shape[0]
     n_samples = samples_before + samples_after
     waveforms = np.empty((n_spikes, n_samples))
+    t_spikes = adjust_spike_times(t_spikes, data, samples_before, samples_after)
     for j in range(n_spikes):
         waveforms[j, :] = \
             data[t_spikes[j] - samples_before: t_spikes[j] + samples_after]
