@@ -27,6 +27,8 @@ import os
 import re
 import scipy.io
 
+from spikesort.signals import Recording
+
 def parse_filename (filename):
     """
     Parses a filename and returns the name of the example and the noise level

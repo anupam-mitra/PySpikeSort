@@ -27,7 +27,6 @@ import os
 import re
 import scipy.io
 
-#from ..spikesort import signals
 from spikesort.signals import Recording
 
 def get_n_classes (filename, datadir):
