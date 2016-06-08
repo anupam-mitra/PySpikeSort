@@ -45,8 +45,8 @@ def wavelet_decomp (s, wavelet='haar', levels=4):
     n_features = np.shape(s)[1]
     n_spikes = np.shape(s)[0]
     features = np.empty((n_spikes, n_features))
-    for s in range(n_spikes):
-        wd = pywt.wavedec(s[s, :], wavelet=wavelet, level=levels)
-        features[s,:] = np.hstack(wd)
+    for j in range(n_spikes):
+        wd = pywt.wavedec(s[j, :], wavelet=wavelet, level=levels)
+        features[j,:] = np.hstack(wd)
     return features
 
